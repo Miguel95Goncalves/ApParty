@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.ArrayList, model.User, services.SService"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <div class="container-fluid">
 	<div class="col-lg-12">
@@ -16,9 +17,32 @@
 			</div>
 		</div>
 		<div class="col-lg-10">
-			<div class="row">
-			
-				<div class="col-lg-4">
+
+			<%
+				ArrayList serviceList = (ArrayList) request.getAttribute("serviceList");
+				int cont = 1;
+
+				for (int i = 0; i < serviceList.size(); i++) {
+
+					if (cont == 1)
+						out.append("<div class='row'>");
+
+					out.append("<div class='col-lg-4'>" + "<a href='#'>" + "<div class='thumbnail'>" + "<img src='" + i
+							+ "'>" + "<div class='caption'>" + "<h3>" + i + "</h3>" + "<p>" + i + "</p>" + "</div>"
+							+ "</div>" + "</a>" + "</div>");
+
+					if (cont == 3) {
+						out.append("</div>");
+						cont = 0;
+					}
+
+					cont++;
+				}
+				
+				if(cont != 1) out.append("</div>");
+			%>
+
+			<!--  <div class="col-lg-4">
 					<a href="#">
 					<div class="thumbnail">
 						<img src="images/services/s1.jpg" alt="s1">
@@ -56,9 +80,9 @@
 							</p>
 						</div>
 					</div>
-				</div>
-				
-			</div>
+				</div>-->
+
 		</div>
 	</div>
+</div>
 </div>

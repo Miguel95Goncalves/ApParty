@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Category;
 import model.Party;
 import model.Post;
 import model.Privilege;
@@ -16,6 +17,7 @@ import model.UserProfessional;
 import model.UserType;
 
 public interface Logic {
+	static ArrayList<Category> arCategory = new ArrayList<>();
 	static ArrayList<UserClient> arUserClient = new ArrayList<>();
 	static ArrayList<UserProfessional> arUserProfessional = new ArrayList<>();
 	static ArrayList<Party> arParty = new ArrayList<>();

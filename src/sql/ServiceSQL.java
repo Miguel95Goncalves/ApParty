@@ -16,9 +16,9 @@ public class ServiceSQL {
 	//Carregar servicos de festas
 	//carregar servicos disponiveis
 
-	public void loadService(){
+	public static void loadService(){
 		String service = "SELECT service_id, service_name, service_description, service_images, service_privilege_id, service_user_id, service_privilege_final_date, service_status_id"
-				+ " FROM Service"
+				+ " FROM Services"
 				+ " WHERE service_status_id = 12";
 
 		try {

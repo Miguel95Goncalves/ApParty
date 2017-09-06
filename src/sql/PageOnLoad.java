@@ -2,8 +2,8 @@ package sql;
 
 public class PageOnLoad {
 
-	public PageOnLoad() {
-		
+	public static void PageOnLoad() {
+		ServiceSQL.loadService();
 	}
 
 }
