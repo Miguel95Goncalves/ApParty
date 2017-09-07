@@ -9,17 +9,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import services.Logic;
+import sql.PageOnLoad;
 
 @WebServlet("/index")
 public class index extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+	
     public index() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sessao = request.getSession(true);
+		
+		PageOnLoad.PageOnLoad();
+		
+		request.setAttribute("serviceList", Logic.arService);
 		
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}

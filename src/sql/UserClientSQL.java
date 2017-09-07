@@ -7,13 +7,17 @@ import java.sql.Statement;
 import db_connection.DBConnection;
 import model.UserClient;
 import services.Logic;
-import services.SStatus;
+import services.SUser;
 import services.SUserType;
 
 public class UserClientSQL {
 
 	public static void loadUserClient(){
-		String userClient = "SELECT user_id, user_name, user_email, user_password, user_nick, user_contact, user_birth, user_avatar, user_description, user_type_id, user_status_id FROM Users WHERE user_status_id = 1";
+		String userClient = "SELECT user_id, user_name, user_email, user_nick, user_contact, user_birth, user_avatar, user_description, user_user_type_id" + 
+				" FROM Users" + 
+				" LEFT JOIN Status ON Status.status_id = Users.user_status_id" + 
+				" LEFT JOIN Db_Tables ON Db_Tables.table_id = Status.status_table_id" + 
+				" WHERE table_name = 'Users'";
 
 		try {
 			Connection conn = DBConnection.getConnection();
@@ -28,9 +32,7 @@ public class UserClientSQL {
 						new SUserType().searchUserType(rs.getInt("user_type_id")),
 						rs.getString("user_name"),
 						rs.getString("user_email"),
-						rs.getString("user_password"),
 						rs.getString("user_contact"),
-						new SStatus().searchStatus(rs.getInt("user_status_id")),
 						rs.getString("user_nick"),
 						rs.getString("user_birth"),
 						rs.getString("user_avatar")));
@@ -46,6 +48,9 @@ public class UserClientSQL {
 	
 	public static int insertUserClient(String user_name,String user_email,String user_password,String user_nick,String user_contact,String user_birth,
 			String user_avatar,String user_description,int user_type_id,int user_status_id) {
+		
+		SUser sUser = new SUser();
+		
 		try {
 
 			Connection conn = DBConnection.getConnection();
@@ -54,7 +59,7 @@ public class UserClientSQL {
 
 			st.executeUpdate(
 					"INSERT INTO Users(user_name, user_email, user_password, user_nick, user_contact, user_birth, user_avatar, user_description, user_type_id, user_status_id)"
-						+ " VALUES ('" + user_name + ", " + user_email + ", " + user_password + ", " + user_nick + ", " + user_contact + ", " + user_birth + ", " + user_avatar + ", "
+						+ " VALUES ('" + user_name + ", " + user_email + ", " + sUser.EncryptPwd(user_password) + ", " + user_nick + ", " + user_contact + ", " + user_birth + ", " + user_avatar + ", "
 								+ user_description + ", " + user_type_id + ", " + user_status_id + "')");
 
 			conn.close();

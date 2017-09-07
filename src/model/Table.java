@@ -5,10 +5,6 @@ public class Table {
 	private int table_id;
 	private String table_name;
 	
-	public Table() {
-		super();
-	}
-	
 	public Table(int table_id, String table_name) {
 		super();
 		this.table_id = table_id;

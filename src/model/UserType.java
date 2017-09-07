@@ -5,10 +5,6 @@ public class UserType {
 	private int user_type_id;
 	private String user_type;
 	
-	public UserType() {
-		super();
-	}
-	
 	public UserType(int user_type_id, String user_type) {
 		super();
 		this.user_type_id = user_type_id;

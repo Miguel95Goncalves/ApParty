@@ -3,23 +3,21 @@ package model;
 public class Service {
 	
 	private int service_id;
-	private Privilege service_privilege;
-	private String service_name, service_description, service_images, service_final_date;
+	private String service_name, service_tiny_description, service_full_description, service_images;
 	private Status service_status;
 	
 	public Service() {
 		super();
 	}
-
-	public Service(int service_id, Privilege service_privilege, String service_name, String service_description,
-			String service_images, String service_final_date, Status service_status) {
+	
+	public Service(int service_id, String service_name, String service_tiny_description,
+			String service_full_description, String service_images, Status service_status) {
 		super();
 		this.service_id = service_id;
-		this.service_privilege = service_privilege;
 		this.service_name = service_name;
-		this.service_description = service_description;
+		this.service_tiny_description = service_tiny_description;
+		this.service_full_description = service_full_description;
 		this.service_images = service_images;
-		this.service_final_date = service_final_date;
 		this.service_status = service_status;
 	}
 
@@ -31,14 +29,6 @@ public class Service {
 		this.service_id = service_id;
 	}
 
-	public Privilege getService_privilege() {
-		return service_privilege;
-	}
-
-	public void setService_privilege(Privilege service_privilege) {
-		this.service_privilege = service_privilege;
-	}
-
 	public String getService_name() {
 		return service_name;
 	}
@@ -47,12 +37,20 @@ public class Service {
 		this.service_name = service_name;
 	}
 
-	public String getService_description() {
-		return service_description;
+	public String getService_tiny_description() {
+		return service_tiny_description;
 	}
 
-	public void setService_description(String service_description) {
-		this.service_description = service_description;
+	public void setService_tiny_description(String service_tiny_description) {
+		this.service_tiny_description = service_tiny_description;
+	}
+
+	public String getService_full_description() {
+		return service_full_description;
+	}
+
+	public void setService_full_description(String service_full_description) {
+		this.service_full_description = service_full_description;
 	}
 
 	public String getService_images() {
@@ -61,14 +59,6 @@ public class Service {
 
 	public void setService_images(String service_images) {
 		this.service_images = service_images;
-	}
-
-	public String getService_final_date() {
-		return service_final_date;
-	}
-
-	public void setService_final_date(String service_final_date) {
-		this.service_final_date = service_final_date;
 	}
 
 	public Status getService_status() {

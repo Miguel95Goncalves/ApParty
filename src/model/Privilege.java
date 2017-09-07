@@ -5,10 +5,6 @@ public class Privilege {
 	private int privilege_id, privilege_days;
 	private float privilege_price;
 	private Status privilege_status;
-	
-	public Privilege() {
-		super();
-	}
 
 	public Privilege(int privilege_id, int privilege_days, float privilege_price, Status privilege_status) {
 		super();

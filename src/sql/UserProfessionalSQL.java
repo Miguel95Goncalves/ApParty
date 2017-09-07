@@ -24,13 +24,13 @@ public class UserProfessionalSQL {
 			rs = st.executeQuery(userProfessional);
 
 			while (rs.next()) {
-				Logic.arUserProfessional.add(new UserProfessional(rs.getInt("user_id"),
+				/*Logic.arUserProfessional.add(new UserProfessional(rs.getInt("user_id"),
 						new SUserType().searchUserType(rs.getInt("user_type_id")),
 						rs.getString("user_name"),
 						rs.getString("user_email"),
 						rs.getString("user_password"),
 						rs.getString("user_contact"),
-						new SStatus().searchStatus(rs.getInt("user_status_id"))));
+						new SStatus().searchStatus(rs.getInt("user_status_id"))));*/
 			}
 			conn.close();
 
