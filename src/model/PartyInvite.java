@@ -6,15 +6,6 @@ public class PartyInvite {
 	private Party pi_party;
 	private User pi_user_invited;
 	
-	public PartyInvite() {
-		super();
-	}
-	
-	public PartyInvite(User pi_user_invited) {
-		super();
-		this.pi_user_invited = pi_user_invited;
-	}
-	
 	public PartyInvite(String pi_guest_email, String pi_guest_name, String pi_guest_status, String pi_answer_date,
 			Party pi_party) {
 		super();

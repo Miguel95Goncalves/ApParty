@@ -3,10 +3,16 @@ package services;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Service;
+
 public class SService implements Logic  {
 
-	public SService() {
-		// TODO Auto-generated constructor stub
+	public static Service searchService(int service_id) {
+		for(Service s : Logic.arService) {
+			if(s.getService_id() == service_id) return s;
+		}
+		
+		return null;
 	}
 
 	@Override

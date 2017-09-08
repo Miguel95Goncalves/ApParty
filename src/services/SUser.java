@@ -6,14 +6,16 @@ import javax.servlet.http.HttpSession;
 
 import model.UserClient;
 import sql.UserClientSQL;
+import sql.UserSQL;
 
 public class SUser implements Logic {
 
 	UserClientSQL userClientSQL = new UserClientSQL();
+	UserSQL userSQL = new UserSQL();
 
 	public boolean login(HttpServletRequest req) {
 
-		int user_id = userClientSQL.login(req.getParameter("user_email"), req.getParameter("user_password"));
+		int user_id = userSQL.login(req.getParameter("user_email"), req.getParameter("user_password"));
 
 		if (user_id != 0) {
 			// PageOnLoad.carregarInformacao();

@@ -1,17 +1,18 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Service {
 	
 	private int service_id;
 	private String service_name, service_tiny_description, service_full_description, service_images;
 	private Status service_status;
-	
-	public Service() {
-		super();
-	}
+	private Category service_category;
+	private ArrayList<ServicePrivilege> serviceArPrivilege;
 	
 	public Service(int service_id, String service_name, String service_tiny_description,
-			String service_full_description, String service_images, Status service_status) {
+			String service_full_description, String service_images, Status service_status,
+			Category service_category) {
 		super();
 		this.service_id = service_id;
 		this.service_name = service_name;
@@ -19,6 +20,8 @@ public class Service {
 		this.service_full_description = service_full_description;
 		this.service_images = service_images;
 		this.service_status = service_status;
+		this.service_category = service_category;
+		this.serviceArPrivilege = new ArrayList<>();
 	}
 
 	public int getService_id() {
@@ -67,6 +70,22 @@ public class Service {
 
 	public void setService_status(Status service_status) {
 		this.service_status = service_status;
+	}
+
+	public Category getService_category() {
+		return service_category;
+	}
+
+	public void setService_category(Category service_category) {
+		this.service_category = service_category;
+	}
+
+	public ArrayList<ServicePrivilege> getServiceArPrivilege() {
+		return serviceArPrivilege;
+	}
+
+	public void setServiceArPrivilege(ArrayList<ServicePrivilege> serviceArPrivilege) {
+		this.serviceArPrivilege = serviceArPrivilege;
 	}
 	
 }

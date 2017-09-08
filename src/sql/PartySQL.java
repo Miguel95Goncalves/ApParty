@@ -6,6 +6,7 @@ import java.sql.Statement;
 
 import db_connection.DBConnection;
 import model.Party;
+import model.PartyInvite;
 import model.PartyStage;
 import services.Logic;
 import services.SParty;
@@ -17,7 +18,9 @@ public class PartySQL {
 	public static void loadParty() {
 		String party = "SELECT party_id, party_name, party_description, party_date, party_coord, party_location, party_start, party_duration, party_qtd_people, party_user_id, party_price, party_status_id"
 				+ " FROM Party"
-				+ " WHERE party_status_id = 5";
+				+ " WHERE party_status_id ="
+				+ " (SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
+				+ " WHERE table_name = 'Party' AND status_name = 'Enabled')";
 
 		try {
 			Connection conn = DBConnection.getConnection();
@@ -69,6 +72,31 @@ public class PartySQL {
 		}
 	}
 	
+	public static void loadPartyInvite() {
+		String partyInvite = "SELECT pi_invite_id, pi_guest_name, pi_guest_email, pi_guest_status, pi_answer_date, pi_party_id"
+				+ " FROM Party_Invite";
+
+		try {
+			Connection conn = DBConnection.getConnection();
+
+			Statement st = conn.createStatement();
+			ResultSet rs;
+
+			rs = st.executeQuery(partyInvite);
+			
+			SParty sParty = new SParty();
+
+			while (rs.next()) {
+				//sParty.searchParty(rs.getInt("pi_party_id")).getPartyArPartyInvite().add(new PartyInvite()));
+			}
+			conn.close();
+
+		} catch (Exception e) {
+			System.err.println("Got an exception! loadPartyStage");
+			System.err.println(e.getMessage());
+		}
+	}
+	
 	public static int insertParty(int party_id, String party_name, String party_description, String party_date, String party_coord, String party_location, String party_start, 
 			int party_duration, int party_qtd_people, int party_user_id, float party_price, int party_status_id) {
 		try {
@@ -80,7 +108,9 @@ public class PartySQL {
 			st.executeUpdate(
 					"INSERT INTO Party(party_id, party_name, party_description, party_date, party_coord, party_location, party_start, party_duration, party_qtd_people, party_user_id, party_price, party_status_id)"
 						+ " VALUES ('" + party_id + ", " + party_name + ", " + party_description + ", " + party_date + ", " + party_coord + ", " + party_location + ", " + party_start + ", "
-								+ party_duration + ", " + party_qtd_people + ", " + party_user_id + ", " + party_price + ", " + party_status_id + "')");
+								+ party_duration + ", " + party_qtd_people + ", " + party_user_id + ", " + party_price + ","
+								+ " (SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
+								+ " WHERE table_name = 'Party' AND status_name = 'Enabled')'");
 
 			conn.close();
 
@@ -176,13 +206,15 @@ public class PartySQL {
 
 			st.executeUpdate(
 					"UPDATE Party"
-					+ " SET party_status_id = 6"
-							+ " WHERE party_id = " + party_id + "");
+					+ " SET party_status_id ="
+					+ " (SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
+					+ " WHERE table_name = 'Party' AND status_name = 'Disabled')"
+					+ " WHERE party_id = " + party_id + "");
 
 			conn.close();
 
 		} catch (Exception e) {
-			System.err.println("Got an exception! ");
+			System.err.println("Got an exception! delParty");
 			System.err.println(e.getMessage());
 		}
 	}
@@ -201,7 +233,7 @@ public class PartySQL {
 			conn.close();
 
 		} catch (Exception e) {
-			System.err.println("Got an exception! ");
+			System.err.println("Got an exception! delPartyStage");
 			System.err.println(e.getMessage());
 		}
 	}

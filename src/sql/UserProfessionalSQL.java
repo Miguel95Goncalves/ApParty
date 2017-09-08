@@ -7,13 +7,19 @@ import java.sql.Statement;
 import db_connection.DBConnection;
 import model.UserProfessional;
 import services.Logic;
-import services.SStatus;
+import services.SUser;
 import services.SUserType;
 
 public class UserProfessionalSQL {
+	
+	SUser sUser = new SUser();
 
 	public static void loadUserProfessional(){
-		String userProfessional = "SELECT user_id, user_name, user_email, user_password, user_contact, user_description, user_type_id, user_status_id FROM Users WHERE user_status_id = 1";
+		String userProfessional = "SELECT user_id, user_name, user_email, user_contact, user_description, user_user_type_id"
+				+ " FROM Users"
+				+ " LEFT JOIN Status ON Status.status_id = Users.user_status_id"
+				+ " LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
+				+ " WHERE table_name = 'Users' AND status_name = 'Enabled'";
 
 		try {
 			Connection conn = DBConnection.getConnection();
@@ -24,13 +30,11 @@ public class UserProfessionalSQL {
 			rs = st.executeQuery(userProfessional);
 
 			while (rs.next()) {
-				/*Logic.arUserProfessional.add(new UserProfessional(rs.getInt("user_id"),
+				Logic.arUserProfessional.add(new UserProfessional(rs.getInt("user_id"),
 						new SUserType().searchUserType(rs.getInt("user_type_id")),
 						rs.getString("user_name"),
 						rs.getString("user_email"),
-						rs.getString("user_password"),
-						rs.getString("user_contact"),
-						new SStatus().searchStatus(rs.getInt("user_status_id"))));*/
+						rs.getString("user_contact")));
 			}
 			conn.close();
 
@@ -41,7 +45,7 @@ public class UserProfessionalSQL {
 		
 	}
 	
-	public static int insertUserClient(String user_name,String user_email,String user_password,String user_contact,String user_description,int user_type_id,int user_status_id) {
+	public static int insertUserProfessional(String user_name,String user_email,String user_password,String user_contact,String user_description,int user_type_id,int user_status_id) {
 		try {
 
 			Connection conn = DBConnection.getConnection();
@@ -50,13 +54,13 @@ public class UserProfessionalSQL {
 
 			st.executeUpdate(
 					"INSERT INTO Users(user_name, user_email, user_password, user_nick, user_contact, user_birth, user_avatar, user_description, user_type_id, user_status_id)"
-						+ " VALUES ('" + user_name + ", " + user_email + ", " + user_password + ", " + user_contact + ", "
+						+ " VALUES ('" + user_name + ", " + user_email + ", " + SUser.EncryptPwd(user_password) + ", " + user_contact + ", "
 								+ user_description + ", " + user_type_id + ", " + user_status_id + "')");
 
 			conn.close();
 
 		} catch (Exception e) {
-			System.err.println("Got an exception! ");
+			System.err.println("Got an exception! insertUserProfessional");
 			System.err.println(e.getMessage());
 		}
 		
@@ -83,14 +87,14 @@ public class UserProfessionalSQL {
 			conn.close();
 
 		} catch (Exception e) {
-			System.err.println("Got an exception!");
+			System.err.println("Got an exception! userProfessional Max ID");
 			System.err.println(e.getMessage());
 		}
 		
 		return 0;
 	}
 
-	public static void editUserClient(int user_id, String user_name,String user_email,String user_password,String user_contact,String user_description,int user_type_id,
+	public static void editUserProfessional(int user_id, String user_name,String user_email,String user_password,String user_contact,String user_description,int user_type_id,
 			int user_status_id){
 		try {
 
@@ -100,34 +104,34 @@ public class UserProfessionalSQL {
 
 			st.executeUpdate(
 					"UPDATE Users"
-					+ " SET user_name = '" + user_name + "', user_email = '" + user_email + "', user_password = '" + user_password + "',"
+					+ " SET user_name = '" + user_name + "', user_email = '" + user_email + "', user_password = '" + SUser.EncryptPwd(user_password) + "',"
 							+ " user_contact = '" + user_contact + "', user_description = '" + user_description + "'"
 							+ " WHERE user_id = " + user_id + "");
 
 			conn.close();
 
 		} catch (Exception e) {
-			System.err.println("Got an exception! ");
+			System.err.println("Got an exception! editUserProfessional");
 			System.err.println(e.getMessage());
 		}
 	}
 
-	public static void delUserClient(int user_id){
+	public static void delUserProfessional(int user_id){
 		try {
-
 			Connection conn = DBConnection.getConnection();
 
 			Statement st = conn.createStatement();
 
 			st.executeUpdate(
 					"UPDATE User"
-					+ " SET user_status_id = 3"
+					+ " SET user_status_id = (SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
+					+ " WHERE table_name = 'Users' AND status_name = 'Disabled')"
 							+ " WHERE user_id = " + user_id + "");
 
 			conn.close();
 
 		} catch (Exception e) {
-			System.err.println("Got an exception! ");
+			System.err.println("Got an exception! delUserProfessional");
 			System.err.println(e.getMessage());
 		}
 	}

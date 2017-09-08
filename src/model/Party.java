@@ -10,11 +10,13 @@ public class Party {
 	private User party_user;
 	private ArrayList<PartyStage> partyArStage;
 	private ArrayList<PartyService> partyArService;
-	private ArrayList<UserClient> partyArUser;
+	private ArrayList<UserParty> partyArUser;
+	private ArrayList<PartyInvite> partyArPartyInvite;
 	private Status party_status;
 
 	public Party(int party_id, int party_duration, float party_price, String party_name, String party_description,
-			String party_date, String party_coord, String party_location, String party_start, User party_user, Status party_status) {
+			String party_date, String party_coord, String party_location, String party_start, User party_user,
+			Status party_status) {
 		super();
 		this.party_id = party_id;
 		this.party_duration = party_duration;
@@ -29,6 +31,7 @@ public class Party {
 		this.partyArStage = new ArrayList<>();
 		this.partyArService = new ArrayList<>();
 		this.partyArUser = new ArrayList<>();
+		this.partyArPartyInvite = new ArrayList<>();
 		this.party_status = party_status;
 	}
 
@@ -127,12 +130,12 @@ public class Party {
 	public void setPartyArService(ArrayList<PartyService> partyArService) {
 		this.partyArService = partyArService;
 	}
-	
-	public ArrayList<UserClient> getPartyArUser() {
+
+	public ArrayList<UserParty> getPartyArUser() {
 		return partyArUser;
 	}
 
-	public void setPartyArUser(ArrayList<UserClient> partyArUser) {
+	public void setPartyArUser(ArrayList<UserParty> partyArUser) {
 		this.partyArUser = partyArUser;
 	}
 
@@ -142,6 +145,14 @@ public class Party {
 
 	public void setParty_status(Status party_status) {
 		this.party_status = party_status;
+	}
+
+	public ArrayList<PartyInvite> getPartyArPartyInvite() {
+		return partyArPartyInvite;
+	}
+
+	public void setPartyArPartyInvite(ArrayList<PartyInvite> partyArPartyInvite) {
+		this.partyArPartyInvite = partyArPartyInvite;
 	}
 
 }
