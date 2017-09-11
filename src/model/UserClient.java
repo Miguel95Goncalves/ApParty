@@ -6,6 +6,7 @@ public class UserClient extends User {
 
 	private String user_nick, user_birth, user_avatar;
 	private ArrayList<Friend> userArFriend; // Lista de amigos
+	private ArrayList<Friend> userArFriendInvite; // Lista de convites de amizade
 
 	public UserClient(int user_id, UserType userType, String user_name, String user_email,
 			String user_contact, String user_nick, String user_birth, String user_avatar) {
@@ -14,6 +15,7 @@ public class UserClient extends User {
 		this.user_birth = user_birth;
 		this.user_avatar = user_avatar;
 		this.userArFriend = new ArrayList<>();
+		this.userArFriendInvite = new ArrayList<>();
 	}
 
 	public String getUser_nick() {
@@ -46,6 +48,14 @@ public class UserClient extends User {
 
 	public void setUserArFriend(ArrayList<Friend> arFriend) {
 		this.userArFriend = arFriend;
+	}
+
+	public ArrayList<Friend> getUserArFriendInvite() {
+		return userArFriendInvite;
+	}
+
+	public void setUserArFriendInvite(ArrayList<Friend> userArFriendInvite) {
+		this.userArFriendInvite = userArFriendInvite;
 	}
 
 }

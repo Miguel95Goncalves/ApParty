@@ -11,7 +11,7 @@ import services.Logic;
 public class TableSQL {
 
 	public static void loadTables() { // Carregar Tabelas
-		String tabelas = "SELECT table_id, table_name FROM Table";
+		String tabelas = "SELECT table_id, table_name FROM Tables";
 
 		try {
 			Connection conn = DBConnection.getConnection();
@@ -22,7 +22,7 @@ public class TableSQL {
 			rs = st.executeQuery(tabelas);
 
 			while (rs.next()) {
-				Logic.arTable.add(new Table(rs.getInt("tabela_id"), rs.getString("tabela_name")));
+				Logic.arTable.add(new Table(rs.getInt("table_id"), rs.getString("table_name")));
 			}
 			conn.close();
 

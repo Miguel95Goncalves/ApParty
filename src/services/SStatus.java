@@ -7,7 +7,7 @@ import model.Status;
 
 public class SStatus implements Logic {
 
-	public Status searchStatus(int status_id) {
+	public static Status searchStatus(int status_id) {
 		
 		for(int i=0;i < Logic.arStatus.size(); i++) {
 			if(Logic.arStatus.get(i).getStatus_id() == status_id) return Logic.arStatus.get(i);

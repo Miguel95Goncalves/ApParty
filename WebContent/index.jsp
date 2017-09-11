@@ -10,8 +10,19 @@
 <title>ApParty</title>
 </head>
 <body>
-	<jsp:include page="/main/nav.jsp" />
-	<jsp:include page="/main/main.jsp" />
-	<jsp:include page="/main/footer.jsp" />
+ 
+<%if(request.getParameter("pag") != null){
+		if(request.getParameter("pag").equals("users")){
+			%> <jsp:include page="/main/main.jsp"/> <%
+		}else{
+			%> <jsp:include page="/main/nav.jsp" /> <%
+			%> <jsp:include page="/main/main.jsp"/> <%
+		}
+		
+	}else{
+		%> <jsp:include page="/main/nav.jsp" /> <% 
+	}
+%>	
+	<!-- <jsp:include page="/main/footer.jsp" /> -->
 </body>
 </html>

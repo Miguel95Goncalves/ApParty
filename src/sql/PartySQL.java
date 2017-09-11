@@ -74,7 +74,7 @@ public class PartySQL {
 	}
 
 	public static void loadPartyInvite() { // Carregar convites para as festas
-		String partyInvite = "SELECT pi_invite_id, pi_guest_id, pi_party_id, pi_guest_status, pi_guest_name, pi_guest_email, pi_answer_date"
+		String partyInvite = "SELECT pi_invite_id, pi_guest_id, pi_party_id, pi_guest_status_id, pi_guest_name, pi_guest_email, pi_answer_date"
 				+ " FROM Party_Invite";
 
 		try {

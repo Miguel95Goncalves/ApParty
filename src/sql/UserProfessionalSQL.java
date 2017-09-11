@@ -30,7 +30,7 @@ public class UserProfessionalSQL {
 
 			while (rs.next()) {
 				Logic.arUserProfessional.add(new UserProfessional(rs.getInt("user_id"),
-						new SUserType().searchUserType(rs.getInt("user_type_id")), rs.getString("user_name"),
+						new SUserType().searchUserType(rs.getInt("user_user_type_id")), rs.getString("user_name"),
 						rs.getString("user_email"), rs.getString("user_contact")));
 			}
 			conn.close();
@@ -43,7 +43,7 @@ public class UserProfessionalSQL {
 	}
 
 	public static int insertUserProfessional(String user_name, String user_email, String user_password, // Inserir profissional
-			String user_contact, String user_description, int user_type_id, int user_status_id) {
+			String user_contact,String user_birth ,String user_description, int user_type_id, int user_status_id) {
 		try {
 
 			Connection conn = DBConnection.getConnection();

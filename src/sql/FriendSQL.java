@@ -21,7 +21,7 @@ public class FriendSQL {
 		for (UserClient uc : Logic.arUserClient) {
 
 			String friend = "SELECT friend_id, friend_friend_id, friend_status_id" + " FROM Friend"
-					+ " WHERE friend_user_id = " + uc.getUser_id() + "";
+					+ " WHERE friend_user_id = " + uc.getUser_id();
 
 			try {
 				Connection conn = DBConnection.getConnection();
@@ -46,7 +46,7 @@ public class FriendSQL {
 
 			// ------------------------------------------------------
 
-			friend = "SELECT friend_id, friend_user_id" + " FROM Friend" + " WHERE friend_friend_id = "
+			friend = "SELECT friend_id, friend_user_id, friend_status_id" + " FROM Friend" + " WHERE friend_friend_id = "
 					+ uc.getUser_id() + "";
 
 			try {

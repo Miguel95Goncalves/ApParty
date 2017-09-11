@@ -5,10 +5,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import db_connection.DBConnection;
+import model.Friend;
 import model.Party;
 import model.UserClient;
 import model.UserParty;
 import services.Logic;
+import services.SStatus;
 import services.SUser;
 import services.SUserType;
 
@@ -17,7 +19,7 @@ public class UserClientSQL {
 	public static void loadUserClient() { // Carregar clientes
 		String userClient = "SELECT user_id, user_name, user_email, user_nick, user_contact, user_birth, user_avatar, user_description, user_user_type_id"
 				+ " FROM Users" + " LEFT JOIN Status ON Status.status_id = Users.user_status_id"
-				+ " LEFT JOIN Db_Tables ON Db_Tables.table_id = Status.status_table_id"
+				+ " LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
 				+ " WHERE table_name = 'Users' AND status_name = 'Enabled'";
 
 		try {
@@ -30,7 +32,7 @@ public class UserClientSQL {
 
 			while (rs.next()) {
 				Logic.arUserClient.add(
-						new UserClient(rs.getInt("user_id"), new SUserType().searchUserType(rs.getInt("user_type_id")),
+						new UserClient(rs.getInt("user_id"), new SUserType().searchUserType(rs.getInt("user_user_type_id")),
 								rs.getString("user_name"), rs.getString("user_email"), rs.getString("user_contact"),
 								rs.getString("user_nick"), rs.getString("user_birth"), rs.getString("user_avatar")));
 			}
@@ -69,7 +71,10 @@ public class UserClientSQL {
 	}
 
 	public static void loadFriendInvite() { // Carregar pedidos de amizade
-		String userClient = "SELECT fi_invite_id, fi_user_id";
+		String userClient = "SELECT friend_id, friend_user_id, friend_friend_id, friend_status_id"
+				+ " FROM Friend"
+				+ " LEFT JOIN Status ON status_id = friend_status_id"
+				+ " WHERE status_name = 'Invited'";
 
 		try {
 			Connection conn = DBConnection.getConnection();
@@ -80,15 +85,12 @@ public class UserClientSQL {
 			rs = st.executeQuery(userClient);
 
 			while (rs.next()) {
-				Logic.arUserClient.add(
-						new UserClient(rs.getInt("user_id"), new SUserType().searchUserType(rs.getInt("user_type_id")),
-								rs.getString("user_name"), rs.getString("user_email"), rs.getString("user_contact"),
-								rs.getString("user_nick"), rs.getString("user_birth"), rs.getString("user_avatar")));
+				SUser.searchUserClient(rs.getInt("friend_friend_id")).getUserArFriendInvite().add(new Friend(rs.getInt("friend_id"), SUser.searchUserClient(rs.getInt("friend_user_id")), SStatus.searchStatus(rs.getInt("friend_status_id"))));
 			}
 			conn.close();
 
 		} catch (Exception e) {
-			System.err.println("Got an exception! loadUserClient");
+			System.err.println("Got an exception! loadFriendInvite");
 			System.err.println(e.getMessage());
 		}
 	}
@@ -104,7 +106,7 @@ public class UserClientSQL {
 			Statement st = conn.createStatement();
 
 			st.executeUpdate(
-					"INSERT INTO Users(user_name, user_email, user_password, user_nick, user_contact, user_birth, user_avatar, user_description, user_type_id, user_status_id),"
+					"INSERT INTO Users(user_name, user_email, user_password, user_nick, user_contact, user_birth, user_avatar, user_description, user_user_type_id, user_status_id)"
 							+ " VALUES ('" + user_name + "', '" + user_email + "', '" + SUser.EncryptPwd(user_password)
 							+ "'," + " '" + user_nick + "', '" + user_contact + "', '" + user_birth + "', '"
 							+ user_avatar + "'," + " '" + user_description + "', " + user_type_id + ","
@@ -150,8 +152,7 @@ public class UserClientSQL {
 	}
 
 	public static void editUserClient(int user_id, String user_name, String user_email, String user_password, // Editar Cliente
-			String user_nick, String user_contact, String user_birth, String user_avatar, String user_description,
-			int user_type_id, int user_status_id) {
+			String user_nick, String user_contact, String user_birth, String user_avatar, String user_description) {
 		try {
 
 			Connection conn = DBConnection.getConnection();

@@ -11,7 +11,7 @@ import services.SStatus;
 
 public class CategorySQL {
 	public static void loadCategory() { // Carregar categorias
-		String categorys = "SELECT category_id, category_name_name, category_status_id FROM Category";
+		String categorys = "SELECT category_id, category_name, category_status_id FROM Category";
 
 		try {
 			Connection conn = DBConnection.getConnection();
