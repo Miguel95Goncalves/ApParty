@@ -49,13 +49,14 @@ public class SUser implements Logic {
 
 		int user_id = UserSQL.login(req.getParameter("ip_email_login"), req.getParameter("ip_password_login"));
 		int user_user_type = UserSQL.userType(user_id);
+		
 		if (user_id != 0) {
 
 			HttpSession sessao = req.getSession(true);
 
 			sessao.setAttribute("user_id", user_id);
 			sessao.setAttribute("user_user_type_id", user_user_type);
-
+			
 			return true;
 
 		} else {

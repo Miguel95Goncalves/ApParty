@@ -1,7 +1,8 @@
   <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="services.SUser"%>
 	<% SUser sUser = new SUser();%>
-	<% sUser.loadClientInformation(request);%>
+	<% sUser.loadClientInformation(request);
+	 HttpSession sessao = request.getSession(true);%>
 	
   <div style="height: 270px;"> 
 	  <div style=" height: 200px; background-color: red; padding-top: 125px">
@@ -16,9 +17,12 @@
     
     <div style="margin-bottom: 3%">
       <h2 style="text-align: center"><%=request.getAttribute("user_name")%></h2>
+      <h2 style="text-align: center"><%=sessao.getAttribute("user_user_type_id")%></h2>
     </div>
     
- <%if(request.getAttribute("user_user_type_id") == "1" ){%>
+ <%
+
+ if(sessao.getAttribute("user_user_type_id") == "1" ){%>
  <div class="tabbable"> <!-- Only required for left/right tabs -->
 	      <ul class="nav nav-tabs">
 	        <li class="active" id="settingsProfile" ><a>Settings</a></li>

@@ -34,7 +34,9 @@
 				<%
 					} else {
 				%>
-				<li><a href="index?pag=users">Perfil</a></li>
+				<li><a href="index?pag=profile">Perfil</a></li>
+				<li><a href="index?pag=friends">Friends</a></li>
+				<li><a href="index?pag=friends">qwe: <%=sessao.getAttribute("user_user_type_id")%></a></li>
 				<li><a>
 						<form method="POST" action="index">
 							<input type="hidden" name="action" id="action" value="logout">
@@ -124,7 +126,7 @@
 			
 						<div class="form-group">
 						  	<label>Name</label>
-						    <input type="text" class="form-control" id="ip_name_normal_na" name="ip_name_na" pattern="[A-Za-z]{3,50}" placeholder="Name" required/>
+						    <input type="text" class="form-control" id="ip_name_normal_na" name="ip_name_na" pattern="[A-Z a-z]{3,50}" placeholder="Name" required/>
 						</div>
 						
 						<div class="form-group">

@@ -12,8 +12,8 @@
 <body>
  
 <%if(request.getParameter("pag") != null){
-		if(request.getParameter("pag").equals("users")){
-			%> <jsp:include page="/main/main.jsp"/> <%
+		if(request.getParameter("pag").equals("profile")){
+			%> <jsp:include page="/user/userProfile.jsp"/> <%
 		}else{
 			%> <jsp:include page="/main/nav.jsp" /> <%
 			%> <jsp:include page="/main/main.jsp"/> <%

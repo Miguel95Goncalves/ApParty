@@ -2,7 +2,9 @@
     pageEncoding="ISO-8859-1"%>
 <main>
 	<%
-		%> <jsp:include page="/user/userProfile.jsp"/> <%
+		if(request.getParameter("pag").equals("friends")){
+			%> <jsp:include page="/user/userFriends.jsp" /> <%
+		}
 	%>
 
 </main>
