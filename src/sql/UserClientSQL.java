@@ -14,10 +14,9 @@ import services.SUserType;
 
 public class UserClientSQL {
 
-	public static void loadUserClient() {
+	public static void loadUserClient() { // Carregar clientes
 		String userClient = "SELECT user_id, user_name, user_email, user_nick, user_contact, user_birth, user_avatar, user_description, user_user_type_id"
-				+ " FROM Users" 
-				+ " LEFT JOIN Status ON Status.status_id = Users.user_status_id"
+				+ " FROM Users" + " LEFT JOIN Status ON Status.status_id = Users.user_status_id"
 				+ " LEFT JOIN Db_Tables ON Db_Tables.table_id = Status.status_table_id"
 				+ " WHERE table_name = 'Users' AND status_name = 'Enabled'";
 
@@ -43,12 +42,11 @@ public class UserClientSQL {
 		}
 	}
 
-	public static void loadUsersToParty() {
-		
-		for(Party p : Logic.arParty) {
-			String userClient = "SELECT up_id, up_user_id"
-					+ " FROM User_Party"
-					+ " WHERE up_party_id = " + p.getParty_id() + "";
+	public static void loadUsersToParty() { // Carregar utilizadores (clientes) para festas
+
+		for (Party p : Logic.arParty) {
+			String userClient = "SELECT up_id, up_user_id" + " FROM User_Party" + " WHERE up_party_id = "
+					+ p.getParty_id() + "";
 
 			try {
 				Connection conn = DBConnection.getConnection();
@@ -69,8 +67,8 @@ public class UserClientSQL {
 			}
 		}
 	}
-	
-	public static void loadFriendInvite() {
+
+	public static void loadFriendInvite() { // Carregar pedidos de amizade
 		String userClient = "SELECT fi_invite_id, fi_user_id";
 
 		try {
@@ -94,8 +92,8 @@ public class UserClientSQL {
 			System.err.println(e.getMessage());
 		}
 	}
-	
-	public static int insertUserClient(String user_name, String user_email, String user_password, String user_nick,
+
+	public static int insertUserClient(String user_name, String user_email, String user_password, String user_nick, // Inserir Cliente
 			String user_contact, String user_birth, String user_avatar, String user_description, int user_type_id,
 			int user_status_id) {
 
@@ -107,9 +105,9 @@ public class UserClientSQL {
 
 			st.executeUpdate(
 					"INSERT INTO Users(user_name, user_email, user_password, user_nick, user_contact, user_birth, user_avatar, user_description, user_type_id, user_status_id),"
-							+ " VALUES ('" + user_name + "', '" + user_email + "', '" + SUser.EncryptPwd(user_password)+ "',"
-							+ " '" + user_nick + "', '" + user_contact + "', '" + user_birth + "', '" + user_avatar + "',"
-							+ " '" + user_description + "', " + user_type_id + ","
+							+ " VALUES ('" + user_name + "', '" + user_email + "', '" + SUser.EncryptPwd(user_password)
+							+ "'," + " '" + user_nick + "', '" + user_contact + "', '" + user_birth + "', '"
+							+ user_avatar + "'," + " '" + user_description + "', " + user_type_id + ","
 							+ " (SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
 							+ " WHERE table_name = 'Users' AND status_name = 'Enabled'))");
 
@@ -151,7 +149,7 @@ public class UserClientSQL {
 		return 0;
 	}
 
-	public static void editUserClient(int user_id, String user_name, String user_email, String user_password,
+	public static void editUserClient(int user_id, String user_name, String user_email, String user_password, // Editar Cliente
 			String user_nick, String user_contact, String user_birth, String user_avatar, String user_description,
 			int user_type_id, int user_status_id) {
 		try {
@@ -174,7 +172,7 @@ public class UserClientSQL {
 		}
 	}
 
-	public static void delUserClient(int user_id) {
+	public static void delUserClient(int user_id) { // Remover Cliente
 		try {
 
 			Connection conn = DBConnection.getConnection();
@@ -183,8 +181,7 @@ public class UserClientSQL {
 
 			st.executeUpdate("UPDATE Users"
 					+ " SET user_status_id = (SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
-					+ " WHERE table_name = 'Users' AND status_name = 'Disabled')"
-					+ " WHERE user_id = " + user_id + "");
+					+ " WHERE table_name = 'Users' AND status_name = 'Disabled')" + " WHERE user_id = " + user_id + "");
 
 			conn.close();
 
@@ -194,7 +191,4 @@ public class UserClientSQL {
 		}
 	}
 
-	public static int insertFriendInvite() {
-		return 0;
-	}
 }

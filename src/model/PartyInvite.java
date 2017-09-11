@@ -2,18 +2,16 @@ package model;
 
 public class PartyInvite {
 
-	private String pi_guest_email, pi_guest_name, pi_guest_status, pi_answer_date;
-	private Party pi_party;
+	private String pi_guest_email, pi_guest_name, pi_answer_date;
 	private User pi_user_invited;
+	private Status pi_guest_status;
 	
-	public PartyInvite(String pi_guest_email, String pi_guest_name, String pi_guest_status, String pi_answer_date,
-			Party pi_party) {
+	public PartyInvite(String pi_guest_email, String pi_guest_name, Status pi_guest_status, String pi_answer_date) {
 		super();
 		this.pi_guest_email = pi_guest_email;
 		this.pi_guest_name = pi_guest_name;
 		this.pi_guest_status = pi_guest_status;
 		this.pi_answer_date = pi_answer_date;
-		this.pi_party = pi_party;
 	}
 	
 	public String getPi_guest_email() {
@@ -28,10 +26,10 @@ public class PartyInvite {
 	public void setPi_guest_name(String pi_guest_name) {
 		this.pi_guest_name = pi_guest_name;
 	}
-	public String getPi_guest_status() {
+	public Status getPi_guest_status() {
 		return pi_guest_status;
 	}
-	public void setPi_guest_status(String pi_guest_status) {
+	public void setPi_guest_status(Status pi_guest_status) {
 		this.pi_guest_status = pi_guest_status;
 	}
 	public String getPi_answer_date() {
@@ -39,12 +37,6 @@ public class PartyInvite {
 	}
 	public void setPi_answer_date(String pi_answer_date) {
 		this.pi_answer_date = pi_answer_date;
-	}
-	public Party getPi_party() {
-		return pi_party;
-	}
-	public void setPi_party(Party pi_party) {
-		this.pi_party = pi_party;
 	}
 	public User getPi_user_invited() {
 		return pi_user_invited;

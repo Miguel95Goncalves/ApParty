@@ -9,7 +9,7 @@ import model.UserType;
 import services.Logic;
 
 public class UserTypeSQL {
-	public static void loadUserType() {
+	public static void loadUserType() { // Carregar tipos de utilizador
 		String userTypes = "SELECT user_type_id, user_type_name FROM User_Type";
 
 		try {

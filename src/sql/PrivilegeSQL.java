@@ -13,7 +13,7 @@ import services.SService;
 import services.SStatus;
 
 public class PrivilegeSQL {
-	public static void loadPrivilege() {
+	public static void loadPrivilege() { // Carregar privilégios
 		String privileges = "SELECT privilege_id, privilege_days, privilege_price, privilege_status_id"
 				+ " FROM Privilege" + " LEFT JOIN Status ON Status.status_id = Privilege.privilege_status_id"
 				+ " LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
@@ -41,7 +41,7 @@ public class PrivilegeSQL {
 		}
 	}
 
-	public static void loadPrivilegeToServices() {
+	public static void loadPrivilegeToServices() { // Carregar privilégios para os serviços
 		String privileges = "SELECT sp_id, sp_service_id, sp_initial_date, sp_final_date" + " FROM Service_Privilege"
 				+ " LEFT JOIN Status ON Status.status_id = Service_Privilege.sp_status_id"
 				+ " LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"

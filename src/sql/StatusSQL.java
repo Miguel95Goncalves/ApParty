@@ -10,7 +10,7 @@ import services.Logic;
 import services.STable;
 
 public class StatusSQL {
-	public static void loadStatus() {
+	public static void loadStatus() { // Carregar Status
 		String status = "SELECT status_id, status_name, status_table_id FROM Status";
 
 		try {

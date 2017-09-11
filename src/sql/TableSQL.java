@@ -10,7 +10,7 @@ import services.Logic;
 
 public class TableSQL {
 
-	public static void loadTables() {
+	public static void loadTables() { // Carregar Tabelas
 		String tabelas = "SELECT table_id, table_name FROM Table";
 
 		try {

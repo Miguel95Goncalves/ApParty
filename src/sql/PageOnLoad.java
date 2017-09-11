@@ -1,9 +1,23 @@
 package sql;
 
-public class PageOnLoad {
-
-	public static void PageOnLoad() {
+public interface PageOnLoad {
+	
+	static void PageOnLoad() {
+		TableSQL.loadTables();
+		StatusSQL.loadStatus();
+		CategorySQL.loadCategory();
+		PrivilegeSQL.loadPrivilege();
+		UserTypeSQL.loadUserType();
+		UserClientSQL.loadUserClient();
+		UserProfessionalSQL.loadUserProfessional();
+		FriendSQL.loadUsersFriends();
 		ServiceSQL.loadService();
+		PartySQL.loadParty();
+		PartySQL.loadPartyStage();
+		PrivilegeSQL.loadPrivilegeToServices();
+		UserClientSQL.loadFriendInvite();
+		PartySQL.loadPartyInvite();
+		UserClientSQL.loadUsersToParty();
 	}
 
 }

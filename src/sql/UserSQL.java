@@ -5,15 +5,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import db_connection.DBConnection;
-import model.User;
-import model.UserClient;
-import services.Logic;
 import services.SUser;
-import services.SUserType;
 
 public class UserSQL {
 
-	public static int login(String user_email, String user_password) {
+	public static int login(String user_email, String user_password) { // Login
 		String login = "SELECT user_id, user_user_type_id" + " FROM Users"
 				+ " LEFT JOIN Status ON Status.status_id = Users.user_status_id"
 				+ " LEFT JOIN Tables ON Tables.table_id = Status.status_table_id" + " WHERE user_email = '" + user_email
