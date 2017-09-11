@@ -75,7 +75,7 @@
 					
 					<div class="modal-footer" style="margin-bottom: 20px; margin-top:20px;">
 						<div class="text-right">
-							<a id="openChoise" name="openChoise"> Create Acount!</a> 
+							<a id="openChoise" href="#" name="openChoise"> Create Acount!</a> 
 							<input type="submit" class="btn btn-success" value="Login"> 
 							<input type="hidden" name="action" id="action" value="login">
 							<input type="hidden" name="logica" id="logica" value="SUser">
