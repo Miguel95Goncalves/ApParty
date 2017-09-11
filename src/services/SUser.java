@@ -57,6 +57,8 @@ public class SUser implements Logic {
 			sessao.setAttribute("user_id", user_id);
 			sessao.setAttribute("user_user_type_id", user_user_type);
 			
+			PageOnLoad.loadArrayLists();
+			
 			return true;
 
 		} else {
@@ -67,6 +69,22 @@ public class SUser implements Logic {
 
 	}
 
+	public static void logout(HttpServletRequest req) {
+		HttpSession sessao = req.getSession(true);
+		sessao.invalidate();
+		
+		Logic.arCategory.clear();
+		Logic.arUserClient.clear();
+		Logic.arUserProfessional.clear();
+		Logic.arParty.clear();
+		Logic.arParty.clear();
+		Logic.arPrivilege.clear();
+		Logic.arService.clear();
+		Logic.arStatus.clear();
+		Logic.arTable.clear();
+		Logic.arUserType.clear();
+	}
+	
 	public static UserClient searchUserClient(int user_id) { // Retornar um objeto UserClient
 
 		for (UserClient uc : Logic.arUserClient) {
@@ -174,8 +192,7 @@ public class SUser implements Logic {
 		} else if (req.getParameter("action").equals("login")) {
 			login(req);
 		} else if (req.getParameter("action").equals("logout")) {
-			HttpSession sessao = req.getSession(true);
-			sessao.invalidate();
+			logout(req);
 		} else if (req.getParameter("action").equals("changeSettings")) {
 			changeSettingsUser(req);
 		} else if (req.getParameter("action").equals("searchUser")) {

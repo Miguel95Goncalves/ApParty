@@ -1,8 +1,19 @@
-package sql;
+package services;
 
-public interface PageOnLoad {
+import sql.CategorySQL;
+import sql.FriendSQL;
+import sql.PartySQL;
+import sql.PrivilegeSQL;
+import sql.ServiceSQL;
+import sql.StatusSQL;
+import sql.TableSQL;
+import sql.UserClientSQL;
+import sql.UserProfessionalSQL;
+import sql.UserTypeSQL;
+
+public class PageOnLoad {
 	
-	static void PageOnLoad() {
+	public static void loadArrayLists() {
 		TableSQL.loadTables();
 		StatusSQL.loadStatus();
 		CategorySQL.loadCategory();

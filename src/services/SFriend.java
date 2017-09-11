@@ -14,6 +14,7 @@ public class SFriend implements Logic {
 		
 		for (UserClient userClient : Logic.arUserClient) {
 			if (userClient.getUser_id() == user_id) {
+				System.out.println(userClient.getUser_avatar());
 				req.setAttribute("friendInvites", userClient.getUserArFriendInvite());
 			}
 		}

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import services.Logic;
-import sql.PageOnLoad;
+import services.PageOnLoad;
 
 @WebServlet("/index")
 public class index extends HttpServlet {
@@ -20,11 +20,7 @@ public class index extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession sessao = request.getSession(true);
-		
-		PageOnLoad.PageOnLoad();
-		
-		request.setAttribute("serviceList", Logic.arService);
+		//HttpSession sessao = request.getSession(true);
 		
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}

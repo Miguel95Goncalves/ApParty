@@ -3,10 +3,10 @@ package model;
 public class Friend {
 
 	private int friend_id;
-	private User friend_user;
+	private UserClient friend_user;
 	private Status friend_status;
 
-	public Friend(int friend_id, User friend_user, Status friend_status) {
+	public Friend(int friend_id, UserClient friend_user, Status friend_status) {
 		super();
 		this.friend_id = friend_id;
 		this.friend_user = friend_user;
@@ -21,11 +21,11 @@ public class Friend {
 		this.friend_id = friend_id;
 	}
 
-	public User getFriend_user() {
+	public UserClient getFriend_user() {
 		return friend_user;
 	}
 
-	public void setFriend_user(User friend_user) {
+	public void setFriend_user(UserClient friend_user) {
 		this.friend_user = friend_user;
 	}
 

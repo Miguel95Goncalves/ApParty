@@ -34,9 +34,8 @@
 				<%
 					} else {
 				%>
-				<li><a href="index?pag=profile">Perfil</a></li>
+				<li><a href="index?pag=profile">Profile</a></li>
 				<li><a href="index?pag=friends">Friends</a></li>
-				<li><a href="index?pag=friends">qwe: <%=sessao.getAttribute("user_user_type_id")%></a></li>
 				<li><a>
 						<form method="POST" action="index">
 							<input type="hidden" name="action" id="action" value="logout">
