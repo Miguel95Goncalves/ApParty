@@ -5,6 +5,10 @@ public class User {
 	private int user_id;
 	private UserType userType;
 	private String user_name, user_email, user_contact;
+	
+	public User() {
+		super();
+	}
 
 	public User(int user_id, UserType userType, String user_name, String user_email,
 			String user_contact) {

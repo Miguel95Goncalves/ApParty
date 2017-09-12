@@ -29,6 +29,7 @@ public class PageOnLoad {
 		UserClientSQL.loadFriendInvite();
 		PartySQL.loadPartyInvite();
 		UserClientSQL.loadUsersToParty();
+		ServiceSQL.loadServiceToUser();
 	}
 
 }

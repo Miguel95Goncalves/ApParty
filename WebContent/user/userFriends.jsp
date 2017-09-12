@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page
-	import="java.util.ArrayList, services.SFriend, model.Friend, model.UserClient"%>
+	import="java.util.ArrayList, services.SFriend, model.Friend, model.UserClient, model.Party"%>
 <%
 	SFriend sFriend = new SFriend();
 	sFriend.loadFriendInvites(request);
@@ -49,7 +49,7 @@
 				// Users com festas em comum
 				ArrayList arUserClient = (ArrayList) request.getAttribute("userCommonParty");
 
-				out.append("<div class='panel panel-default'>" + "<div class='panel-body bg-primary'>");
+				out.append("<div class='panel panel-default'>" + "<div class='panel-body bg-info'>");
 
 				for (int i = 0; i < arUserClient.size(); i++) {
 
@@ -58,14 +58,20 @@
 					String name = userClient.getUser_name();
 					String avatar = userClient.getUser_avatar();
 					int user_id = userClient.getUser_id();
+					
+					ArrayList<Party> commonPartys = SFriend.loadCommonParty(user_id);
 
 					if (avatar == null)
 						avatar = "images/users/user";
 
-					out.append("<div class='panel panel-default'>" + "<div class='row text-center' Style='margin: 1.5%;'>"
+					out.append("<div class='panel panel-default'>" + "<div class='row' Style='margin: 1.5%;'>"
 							+ "<div class='col-lg-2'>" + "<img src='" + avatar + ".jpg' class='img-circle'"
-							+ "alt='' width='120' height='80'>" + "</div>" + "<div class='col-lg-6'>" + "<h2>"
-							+ "<a href='#'>" + name + "</a>" + "</h2>" + "</div>"
+							+ "alt='' width='120' height='80'>" + "</div>" + "<div class='col-lg-6'>" + "<h3>"
+							+ "<a href='#'>" + name + "</a>" + "</h3>");
+							for(Party p : commonPartys){
+								out.append(p.getParty_name() + ", ");
+							}
+							out.append("</div>"
 							+ "<div class='col-lg-4' Style='margin-top: 1.5%;'>"
 							+ "<form method='post'>"
 							+ "<input type='hidden' name='user_id' value='" + user_id + "'>"

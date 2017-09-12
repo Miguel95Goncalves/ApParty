@@ -103,24 +103,23 @@ public class UserClientSQL {
 		}
 	}
 
-	/*public static ArrayList<UserClient> loadCommonPeople(int party_id, int user_id) {
-		
+	public static ArrayList<UserClient> loadCommonPeople(int user_id) { // Carregar common people
+
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/dd/MM");
 		LocalDate localDate = LocalDate.now();
-		
+
 		ArrayList<UserClient> arCommonPeople = new ArrayList<>();
-		
-		String commonPeople = "SELECT up_id, up_user_id, user_user_type_id, user_name, user_email, user_contact, user_nick, user_birth, user_avatar\r\n" + 
-				"FROM User_Party\r\n" + 
-				"LEFT JOIN Party ON party_id = up_party_id\r\n" + 
+
+		String commonPeople = "SELECT up_user_id, user_user_type_id, user_name, user_email, user_contact, user_nick, user_birth, user_avatar\r\n" + 
+				"FROM User_Party\" + \" LEFT JOIN Party ON party_id = up_party_id\r\n" + 
 				"LEFT JOIN Friend ON friend_user_id = up_user_id\r\n" + 
 				"LEFT JOIN Users ON user_id = up_user_id\r\n" + 
 				"LEFT JOIN User_Type ON user_type_id = user_user_type_id\r\n" + 
-				"WHERE up_party_id = 1\r\n" + 
-				"AND '2017/12/09' > party_date\r\n" + 
-				"AND up_user_id != 2\r\n" + 
+				"WHERE '" + dtf.format(localDate) + "' > party_date\r\n" + 
+				"AND up_user_id != " + user_id + "\r\n" + 
 				"AND friend_status_id != (SELECT status_id FROM Status LEFT JOIN Tables ON table_id = status_table_id\r\n" + 
-				"WHERE table_name = 'Friend' AND status_name = 'Invited')";
+				"WHERE table_name = 'Friend' AND status_name = 'Invited')\r\n" + 
+				"GROUP BY up_user_id, user_user_type_id, user_name, user_email, user_contact, user_nick, user_birth, user_avatar";
 
 		try {
 			Connection conn = DBConnection.getConnection();
@@ -131,15 +130,57 @@ public class UserClientSQL {
 			rs = st.executeQuery(commonPeople);
 
 			while (rs.next()) {
-				arCommonPeople.add(new UserClient(rs.getInt("up_user_id"), userType, user_name, user_email, user_contact, user_nick, user_birth, user_avatar));
+				arCommonPeople.add(new UserClient(rs.getInt("up_user_id"),
+						new SUserType().searchUserType(rs.getInt("user_user_type_id")), rs.getString("user_name"),
+						rs.getString("user_email"), rs.getString("user_contact"), rs.getString("user_nick"),
+						rs.getString("user_birth"), rs.getString("user_avatar")));
 			}
 			conn.close();
 
 		} catch (Exception e) {
-			System.err.println("Got an exception! loadFriendInvite");
+			System.err.println("Got an exception! loadCommonPeople");
 			System.err.println(e.getMessage());
 		}
-	}*/
+
+		return arCommonPeople;
+	}
+
+	public static ArrayList<Party> loadCommonPartys(int user_id){
+		
+		ArrayList<Party> arCommonPartys = new ArrayList<>();
+		
+		String commonPartys = "SELECT party_id, party_duration, party_price, party_name, party_description, party_date, party_coord, party_location, party_start, party_status_id\r\n" + 
+				"FROM Party\r\n" + 
+				"LEFT JOIN User_Party ON party_id = up_party_id\r\n" + 
+				"WHERE up_user_id = " + user_id + "\r\n" + 
+				"GROUP BY party_id, party_duration, party_price, party_name, party_description, party_date, party_coord, party_location, party_start, party_status_id";
+
+		try {
+			Connection conn = DBConnection.getConnection();
+
+			Statement st = conn.createStatement();
+			ResultSet rs;
+			
+			UserClient uc = new UserClient();
+
+			rs = st.executeQuery(commonPartys);
+
+			while (rs.next()) {
+				arCommonPartys.add(new Party(rs.getInt("party_id"), rs.getInt("party_duration"),
+						rs.getFloat("party_price"), rs.getString("party_name"), rs.getString("party_description"),
+						rs.getString("party_date"), rs.getString("party_coord"), rs.getString("party_location"),
+						rs.getString("party_start"), uc,
+						SStatus.searchStatus(rs.getInt("party_status_id"))));
+			}
+			conn.close();
+
+		} catch (Exception e) {
+			System.err.println("Got an exception! loadCommonParty");
+			System.err.println(e.getMessage());
+		}
+
+		return arCommonPartys;
+	}
 	
 	public static int insertUserClient(String user_name, String user_email, String user_password, String user_nick, // Inserir
 																													// Cliente

@@ -7,6 +7,10 @@ public class UserClient extends User {
 	private String user_nick, user_birth, user_avatar;
 	private ArrayList<Friend> userArFriend; // Lista de amigos
 	private ArrayList<Friend> userArFriendInvite; // Lista de convites de amizade
+	
+	public UserClient() {
+		
+	}
 
 	public UserClient(int user_id, UserType userType, String user_name, String user_email,
 			String user_contact, String user_nick, String user_birth, String user_avatar) {

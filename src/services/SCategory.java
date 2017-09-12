@@ -7,7 +7,7 @@ import model.Category;
 
 public class SCategory implements Logic {
 
-	public Category searchCategory(int category_id) {
+	public static Category searchCategory(int category_id) {
 
 		for (int i = 0; i < Logic.arCategory.size(); i++) {
 			if (Logic.arCategory.get(i).getCategory_id() == category_id)

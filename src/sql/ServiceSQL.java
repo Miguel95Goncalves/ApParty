@@ -8,6 +8,7 @@ import db_connection.DBConnection;
 import model.Party;
 import model.PartyService;
 import model.Service;
+import model.UserProfessional;
 import services.Logic;
 import services.SCategory;
 import services.SStatus;
@@ -72,6 +73,38 @@ public class ServiceSQL {
 
 	}
 
+	public static void loadServiceToUser() {
+		for (UserProfessional up : Logic.arUserProfessional) {
+			String servicesUser = "SELECT service_id, service_name, service_tiny_description, service_full_description, service_images, service_user_id, service_status_id, service_category_id\r\n" + 
+					"FROM Services\r\n" + 
+					"LEFT JOIN Status ON status_id = service_status_id\r\n" + 
+					"LEFT JOIN Tables ON table_id = status_table_id\r\n" + 
+					"WHERE table_name = 'Services' AND status_name = 'Enabled'\r\n" + 
+					"AND service_user_id = 4";
+
+			try {
+				Connection conn = DBConnection.getConnection();
+
+				Statement st = conn.createStatement();
+				ResultSet rs;
+
+				rs = st.executeQuery(servicesUser);
+
+				while (rs.next()) {
+					up.getArService().add(new Service(rs.getInt("service_id"), rs.getString("service_name"),
+						rs.getString("service_tiny_description"), rs.getString("service_full_description"),
+						rs.getString("service_images"), SStatus.searchStatus(rs.getInt("service_status_id")),
+						SCategory.searchCategory(rs.getInt("service_category_id"))));
+				}
+				conn.close();
+
+			} catch (Exception e) {
+				System.err.println("Got an exception! loadServicesToUser");
+				System.err.println(e.getMessage());
+			}
+		}
+	}
+	
 	public static int insertService(String service_name, String service_tiny_description, // Inserir Serviço
 			String service_full_description, String service_images, int service_category_id, int service_user_id) {
 
