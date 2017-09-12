@@ -4,6 +4,8 @@
 	<%
 		if(request.getParameter("pag").equals("friends")){
 			%> <jsp:include page="/user/userFriends.jsp" /> <%
+		}else if(request.getParameter("pag").equals("services")){
+			%> <jsp:include page="/service/serviceFilter.jsp" /> <%
 		}
 	%>
 

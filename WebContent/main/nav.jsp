@@ -36,6 +36,7 @@
 				%>
 				<li><a href="index?pag=profile">Profile</a></li>
 				<li><a href="index?pag=friends">Friends</a></li>
+				<li><a href="index?pag=services">Services</a></li>
 				<li><a>
 						<form method="POST" action="index">
 							<input type="hidden" name="action" id="action" value="logout">
