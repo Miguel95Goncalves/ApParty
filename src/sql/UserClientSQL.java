@@ -51,6 +51,8 @@ public class UserClientSQL {
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/dd/MM");
 		LocalDate localDate = LocalDate.now();
+		
+		//String date = String.copyValueOf(dtf.format(localDate));
 
 		for (Party p : Logic.arParty) {
 			String userClient = "SELECT up_id, up_user_id" + " FROM User_Party"
