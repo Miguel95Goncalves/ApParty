@@ -8,11 +8,25 @@ import javax.servlet.http.HttpSession;
 
 import model.Friend;
 import model.Party;
+import model.Status;
 import model.UserClient;
 import model.UserParty;
+import sql.FriendSQL;
 import sql.UserClientSQL;
 
 public class SFriend implements Logic {
+
+	public static Friend searchFriendship(int friend_id, int user_id) {
+
+		UserClient uc = SUser.searchUserClient(user_id);
+
+		for (Friend f : uc.getUserArFriendInvite()) {
+			if (f.getFriend_user().getUser_id() == friend_id)
+				return f;
+		}
+
+		return null;
+	}
 
 	public static void loadFriendInvites(HttpServletRequest req) { // Carregar Convites de amizade
 		HttpSession sessao = req.getSession(true);
@@ -36,12 +50,73 @@ public class SFriend implements Logic {
 
 	public static ArrayList<Party> loadCommonParty(int user_id, HttpServletRequest req) {
 		ArrayList<Party> arCommonParty = UserClientSQL.loadCommonPartys(user_id, req);
-return arCommonParty;
-		//req.setAttribute("userCommonParty", arCommonParty);
+		return arCommonParty;
+		// req.setAttribute("userCommonParty", arCommonParty);
 	}
 
 	public static void addFriendInvite(HttpServletRequest req) {
+		HttpSession sessao = req.getSession(true);
 
+		int friendId = Integer.parseInt(req.getParameter("friendId").toString());
+		int userId = (int) sessao.getAttribute("user_id");
+		Status friendStatus = new Status();
+
+		for (Status s : Logic.arStatus) {
+			if (s.getStatus_name().equals("Accepted") && s.getStatus_table().equals("Friend"))
+				friendStatus = s;
+		}
+		System.out.println("chega Aqui!");
+		SUser.searchUserClient(userId).getUserArFriend()
+				.add(new Friend(FriendSQL.addFriend(userId, friendId), SUser.searchUserClient(friendId), friendStatus));
+	}
+
+	public static void acceptFriend(HttpServletRequest req) {
+		HttpSession sessao = req.getSession(true);
+
+		int friendId = Integer.parseInt(req.getParameter("friendId").toString());
+		int userId = (int) sessao.getAttribute("user_id");
+
+		for (int i = 0; i < SUser.searchUserClient(userId).getUserArFriendInvite().size(); i++) {
+
+			if (SUser.searchUserClient(userId).getUserArFriendInvite().get(i).getFriend_user()
+					.getUser_id() == friendId) {
+
+				SUser.searchUserClient(userId).getUserArFriend().add(searchFriendship(friendId, userId));
+
+				FriendSQL.acceptFriend(searchFriendship(friendId, userId).getFriend_id());
+
+				SUser.searchUserClient(userId).getUserArFriendInvite().remove(searchFriendship(friendId, userId));
+			}
+		}
+
+	}
+
+	public static void rejectFriend(HttpServletRequest req) {
+		HttpSession sessao = req.getSession(true);
+
+		int friendId = Integer.parseInt(req.getParameter("friendId").toString());
+		int userId = (int) sessao.getAttribute("user_id");
+
+		for (int i = 0; i < SUser.searchUserClient(userId).getUserArFriendInvite().size(); i++) {
+			if (SUser.searchUserClient(userId).getUserArFriendInvite().get(i).getFriend_user()
+					.getUser_id() == friendId) {
+
+				FriendSQL.rejectFriend(friendId);
+
+				SUser.searchUserClient(userId).getUserArFriendInvite().remove(searchFriendship(friendId, userId));
+			}
+		}
+	}
+
+	public static void removeFriend(HttpServletRequest req) {
+		HttpSession sessao = req.getSession(true);
+
+		int friendId = Integer.parseInt(req.getParameter("friendId").toString());
+		int userId = (int) sessao.getAttribute("user_id");
+
+		FriendSQL.removeFriend(userId, friendId);
+		System.out.println("friendId: " + friendId);
+		FriendSQL.loadUserFriends(userId);
 	}
 
 	@Override
@@ -49,8 +124,14 @@ return arCommonParty;
 
 		if (req.getParameter("action").equals("loadFriendInvites")) {
 			loadFriendInvites(req);
-		} else if (req.getParameter("action").equals("addFriend")) {
+		} else if (req.getParameter("action").equals("acceptFriend")) {
+			acceptFriend(req);
+		} else if (req.getParameter("action").equals("inviteFriend")) {
 			addFriendInvite(req);
+		} else if (req.getParameter("action").equals("rejFriend")) {
+			rejectFriend(req);
+		} else if (req.getParameter("action").equals("remFriend")) {
+			removeFriend(req);
 		}
 
 		return "/index.jsp";

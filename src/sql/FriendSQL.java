@@ -15,13 +15,12 @@ public class FriendSQL {
 
 	public static void loadUsersFriends() { // Carregar listas de amigos
 
-		SUser sUser = new SUser();
-		SStatus sStatus = new SStatus();
-
 		for (UserClient uc : Logic.arUserClient) {
 
 			String friend = "SELECT friend_id, friend_friend_id, friend_status_id" + " FROM Friend"
-					+ " WHERE friend_user_id = " + uc.getUser_id();
+					+ " WHERE friend_user_id = " + uc.getUser_id()
+					+ " AND friend_status_id = (SELECT status_id FROM Status LEFT JOIN Tables ON table_id = status_table_id"
+					+ " WHERE table_name = 'Friend' AND status_name = 'Accepted')";
 
 			try {
 				Connection conn = DBConnection.getConnection();
@@ -34,8 +33,8 @@ public class FriendSQL {
 				while (rs.next()) {
 					uc.getUserArFriend()
 							.add(new Friend(rs.getInt("friend_id"),
-									sUser.searchUserClient(rs.getInt("friend_friend_id")),
-									sStatus.searchStatus(rs.getInt("friend_status_id"))));
+									SUser.searchUserClient(rs.getInt("friend_friend_id")),
+									SStatus.searchStatus(rs.getInt("friend_status_id"))));
 				}
 				conn.close();
 
@@ -44,10 +43,16 @@ public class FriendSQL {
 				System.err.println(e.getMessage());
 			}
 
-			// ------------------------------------------------------
+		}
 
-			friend = "SELECT friend_id, friend_user_id, friend_status_id" + " FROM Friend" + " WHERE friend_friend_id = "
-					+ uc.getUser_id() + "";
+		// --------------------------------------------------------------------------------
+
+		for (UserClient uc : Logic.arUserClient) {
+
+			String friend = "SELECT friend_id, friend_user_id, friend_status_id" + " FROM Friend"
+					+ " WHERE friend_friend_id = " + uc.getUser_id()
+					+ " AND friend_status_id = (SELECT status_id FROM Status LEFT JOIN Tables ON table_id = status_table_id"
+					+ " WHERE table_name = 'Friend' AND status_name = 'Accepted')";
 
 			try {
 				Connection conn = DBConnection.getConnection();
@@ -59,20 +64,81 @@ public class FriendSQL {
 
 				while (rs.next()) {
 					uc.getUserArFriend()
-							.add(new Friend(rs.getInt("friend_id"), sUser.searchUserClient(rs.getInt("friend_user_id")),
-									sStatus.searchStatus(rs.getInt("friend_status_id"))));
+							.add(new Friend(rs.getInt("friend_id"), SUser.searchUserClient(rs.getInt("friend_user_id")),
+									SStatus.searchStatus(rs.getInt("friend_status_id"))));
 				}
 				conn.close();
 
 			} catch (Exception e) {
-				System.err.println("Got an exception! loadUserFriends");
+				System.err.println("Got an exception! loadUserFriends2");
 				System.err.println(e.getMessage());
 			}
-
 		}
 
 	}
 
+	public static void loadUserFriends(int user_id) {
+		
+		SUser.searchUserClient(user_id).getUserArFriend().clear();
+		
+		String friend = "SELECT friend_id, friend_friend_id, friend_status_id" + " FROM Friend"
+				+ " WHERE friend_user_id = " + user_id
+				+ " AND friend_status_id = (SELECT status_id FROM Status LEFT JOIN Tables ON table_id = status_table_id"
+				+ " WHERE table_name = 'Friend' AND status_name = 'Accepted')";
+
+		try {
+			Connection conn = DBConnection.getConnection();
+
+			Statement st = conn.createStatement();
+			ResultSet rs;
+
+			rs = st.executeQuery(friend);
+
+			while (rs.next()) {
+				SUser.searchUserClient(user_id).getUserArFriend()
+						.add(new Friend(rs.getInt("friend_id"),
+								SUser.searchUserClient(rs.getInt("friend_friend_id")),
+								SStatus.searchStatus(rs.getInt("friend_status_id"))));
+			}
+			conn.close();
+
+		} catch (Exception e) {
+			System.err.println("Got an exception! loadUserFriends");
+			System.err.println(e.getMessage());
+		}
+
+	
+
+	// --------------------------------------------------------------------------------
+
+	
+
+		friend = "SELECT friend_id, friend_user_id, friend_status_id" + " FROM Friend"
+				+ " WHERE friend_friend_id = " + user_id
+				+ " AND friend_status_id = (SELECT status_id FROM Status LEFT JOIN Tables ON table_id = status_table_id"
+				+ " WHERE table_name = 'Friend' AND status_name = 'Accepted')";
+
+		try {
+			Connection conn = DBConnection.getConnection();
+
+			Statement st = conn.createStatement();
+			ResultSet rs;
+
+			rs = st.executeQuery(friend);
+
+			while (rs.next()) {
+				SUser.searchUserClient(user_id).getUserArFriend()
+						.add(new Friend(rs.getInt("friend_id"), SUser.searchUserClient(rs.getInt("friend_user_id")),
+								SStatus.searchStatus(rs.getInt("friend_status_id"))));
+			}
+			conn.close();
+
+		} catch (Exception e) {
+			System.err.println("Got an exception! loadUserFriends2");
+			System.err.println(e.getMessage());
+		}
+	}
+	
 	public static int addFriend(int friend_user_id, int friend_friend_id) { // Adicionar amigo
 		try {
 
@@ -80,10 +146,10 @@ public class FriendSQL {
 
 			Statement st = conn.createStatement();
 
-			st.executeUpdate("INSERT INTO Friend(friend_user_id, friend_friend_id, friend_status_id)" + " VALUES ('"
+			st.executeUpdate("INSERT INTO Friend(friend_user_id, friend_friend_id, friend_status_id)" + " VALUES("
 					+ friend_user_id + ", " + friend_friend_id + ","
-					+ " (SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
-					+ " WHERE table_name = 'Friend' AND status_name = 'Invited'),");
+					+ "(SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
+					+ " WHERE table_name = 'Friend' AND status_name = 'Invited'))");
 
 			conn.close();
 
@@ -123,6 +189,26 @@ public class FriendSQL {
 		return 0;
 	}
 
+	public static void removeFriend(int friend_user_id, int friend_friend_id) {
+		try {
+
+			Connection conn = DBConnection.getConnection();
+
+			Statement st = conn.createStatement();
+
+			st.executeUpdate("INSERT INTO Friend(friend_user_id, friend_friend_id, friend_status_id)" + " VALUES("
+					+ friend_user_id + ", " + friend_friend_id + ","
+					+ "(SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
+					+ " WHERE table_name = 'Friend' AND status_name = 'Rejected'))");
+
+			conn.close();
+
+		} catch (Exception e) {
+			System.err.println("Got an exception! insertFriendRejected");
+			System.err.println(e.getMessage());
+		}
+	}
+
 	public static void acceptFriend(int friend_id) { // Aceitar amigo
 		try {
 
@@ -139,6 +225,26 @@ public class FriendSQL {
 
 		} catch (Exception e) {
 			System.err.println("Got an exception! AcceptUser");
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public static void rejectFriend(int friend_id) {
+		try {
+
+			Connection conn = DBConnection.getConnection();
+
+			Statement st = conn.createStatement();
+
+			st.executeUpdate("UPDATE Friend" + " SET friend_status_id ="
+					+ " (SELECT status_id FROM Status LEFT JOIN Tables ON Tables.table_id = Status.status_table_id"
+					+ " WHERE table_name = 'Friend' AND status_name = 'Rejected')" + " WHERE friend_id = " + friend_id
+					+ "");
+
+			conn.close();
+
+		} catch (Exception e) {
+			System.err.println("Got an exception! RejectUser");
 			System.err.println(e.getMessage());
 		}
 	}

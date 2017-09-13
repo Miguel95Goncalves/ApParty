@@ -6,6 +6,10 @@ public class Status {
 	private String status_name;
 	private Table status_table;
 
+	public Status() {
+		super();
+	}
+
 	public Status(int status_id, String status_name, Table status_table) {
 		super();
 		this.status_id = status_id;
