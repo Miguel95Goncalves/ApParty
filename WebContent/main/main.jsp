@@ -10,8 +10,7 @@
 			} else if (request.getParameter("pag").equals("friends")) {
 				%> <jsp:include page="../user/userFriends.jsp" /> <%
 			} else if (request.getParameter("pag").equals("services")) {
-				%> <jsp:include page="../service/serviceFilter
-				.jsp" /><% 
+				%> <jsp:include page="../service/service.jsp" /><% 
 			} else if (request.getParameter("pag").equals("posts")){
 				%> <jsp:include page="../post/post.jsp" /><% 
 			} else if (request.getParameter("pag").equals("parts")){
