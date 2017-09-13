@@ -34,8 +34,8 @@ public class SFriend implements Logic {
 		req.setAttribute("userCommonParty", arUserPartyCommon);
 	}
 
-	public static ArrayList<Party> loadCommonParty(int user_id) {
-		ArrayList<Party> arCommonParty = UserClientSQL.loadCommonPartys(user_id);
+	public static ArrayList<Party> loadCommonParty(int user_id, HttpServletRequest req) {
+		ArrayList<Party> arCommonParty = UserClientSQL.loadCommonPartys(user_id, req);
 return arCommonParty;
 		//req.setAttribute("userCommonParty", arCommonParty);
 	}
