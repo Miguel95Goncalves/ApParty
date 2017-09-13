@@ -6,6 +6,7 @@
 	SFriend sFriend = new SFriend();
 	sFriend.loadFriendInvites(request);
 	sFriend.loadFriendCommonParty(request);
+	sFriend.loadFriends(request);
 
 	HttpSession sessao = request.getSession(true);
 
@@ -16,6 +17,28 @@
 	<div class="col-lg-4 text-center">
 		<div class="panel-body">
 			<h3>Friends</h3>
+			<%
+				ArrayList friends = (ArrayList) request.getAttribute("friends");
+
+				out.append("<div class='panel panel-default'>" + "<div class='panel-body bg-warning'>");
+
+				for (int i = 0; i < friends.size(); i++) {
+					Friend friend = (Friend) friends.get(i);
+					String name = friend.getFriend_user().getUser_name();
+					String avatar = friend.getFriend_user().getUser_avatar();
+
+					if (avatar == null)
+						avatar = "images/users/user";
+
+					out.append("<div class='panel panel-default'>" + "<div class='row' Style='margin: 0.2%;'>"
+							+ "<div class='col-lg-2'>" + "<img src='" + avatar + ".jpg' class='img-circle'"
+							+ "alt='' width='75' height='58'>" + "</div>"
+							+ "<div class='col-lg-10' Style='margin-top: 2.5%;'>" + "<h4>" + "<a href='#'>" + name + "</a>"
+							+ "</h4></div></div></div>");
+				}
+
+				out.append("</div>" + "</div>");
+			%>
 		</div>
 	</div>
 
@@ -41,12 +64,12 @@
 
 					out.append("<div class='panel panel-default'>" + "<div class='row' Style='margin: 0.2%;'>"
 							+ "<div class='col-lg-2'>" + "<img src='" + avatar + ".jpg' class='img-circle'"
-							+ "alt='' width='90' height='72'>" + "</div>" + "<div class='col-lg-5'>" + "<h4>"
+							+ "alt='' width='75' height='58'>" + "</div>" + "<div class='col-lg-5'>" + "<h4>"
 							+ "<a href='#'>" + name + "</a>" + "</h4>");
 					for (Party p : commonPartys) {
 						out.append(p.getParty_name() + ", ");
 					}
-					out.append("</div>" + "<div class='col-lg-5' Style='margin-top: 5%;'>");
+					out.append("</div>" + "<div class='col-lg-5' Style='margin-top: 3.5%;'>");
 					out.append("<div class='col-lg-6'><form method='post'>"
 							+ "<input type='hidden' name='action' value='acceptFriend'/>"
 							+ "<input type='hidden' name='logica' value='SFriend'/>"
@@ -94,13 +117,13 @@
 
 						out.append("<div class='panel panel-default'>" + "<div class='row' Style='margin: 0.2%;'>"
 								+ "<div class='col-lg-2'>" + "<img src='" + avatar + ".jpg' class='img-circle'"
-								+ "alt='' width='90' height='72'>" + "</div>" + "<div class='col-lg-5'>" + "<h4>"
+								+ "alt='' width='75' height='58'>" + "</div>" + "<div class='col-lg-5'>" + "<h4>"
 								+ "<a href='#'>" + name + "</a>" + "</h4>");
 						for (Party p : commonPartys) {
 							out.append(p.getParty_name() + ", ");
 						}
 
-						out.append("</div>" + "<div class='col-lg-4' Style='margin-top: 5%;'>");
+						out.append("</div>" + "<div class='col-lg-4' Style='margin-top: 3.5%;'>");
 
 						out.append("<div class='col-lg-5'><form method='post'>"
 								+ "<input type='hidden' name='user_id' value='" + user_id + "'>"

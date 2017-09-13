@@ -10,7 +10,6 @@ import model.Friend;
 import model.Party;
 import model.Status;
 import model.UserClient;
-import model.UserParty;
 import sql.FriendSQL;
 import sql.UserClientSQL;
 
@@ -28,15 +27,19 @@ public class SFriend implements Logic {
 		return null;
 	}
 
+	public static void loadFriends(HttpServletRequest req) {
+		HttpSession sessao = req.getSession(true);
+		int user_id = (int) sessao.getAttribute("user_id");
+
+		req.setAttribute("friends", SUser.searchUserClient(user_id).getUserArFriend());
+	}
+
 	public static void loadFriendInvites(HttpServletRequest req) { // Carregar Convites de amizade
 		HttpSession sessao = req.getSession(true);
 		int user_id = (int) sessao.getAttribute("user_id");
 
-		for (UserClient userClient : Logic.arUserClient) {
-			if (userClient.getUser_id() == user_id) {
-				req.setAttribute("friendInvites", userClient.getUserArFriendInvite());
-			}
-		}
+		req.setAttribute("friendInvites", SUser.searchUserClient(user_id).getUserArFriendInvite());
+
 	}
 
 	public static void loadFriendCommonParty(HttpServletRequest req) { // Carregar utilizadores presentes nas mesmas
@@ -65,7 +68,7 @@ public class SFriend implements Logic {
 			if (s.getStatus_name().equals("Accepted") && s.getStatus_table().equals("Friend"))
 				friendStatus = s;
 		}
-		System.out.println("chega Aqui!");
+
 		SUser.searchUserClient(userId).getUserArFriend()
 				.add(new Friend(FriendSQL.addFriend(userId, friendId), SUser.searchUserClient(friendId), friendStatus));
 	}
@@ -115,7 +118,7 @@ public class SFriend implements Logic {
 		int userId = (int) sessao.getAttribute("user_id");
 
 		FriendSQL.removeFriend(userId, friendId);
-		System.out.println("friendId: " + friendId);
+
 		FriendSQL.loadUserFriends(userId);
 	}
 
