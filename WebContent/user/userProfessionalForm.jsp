@@ -11,7 +11,7 @@
 	sUser.loadClientInformation(request);
 %>
 <%
-	category.loadCategoryInformation(request);
+	;
 %>
 
 <button id="btnOpenAddService" name="btnOpenAddService"
@@ -204,7 +204,7 @@
 							<tbody>
 								<%
 									ArrayList<Service> s = new ArrayList<Service>();
-									s.addAll(sUser.loadServicesUser(request));
+									s.addAll(SService.loadServicesUser(request));
 									if (s != null) {
 										for (int i = 0; i < s.size(); i++) {
 											Service service = (Service) s.get(i);
@@ -269,6 +269,7 @@
 								<option value="0">Select the option</option>
 								<%
 									ArrayList<Category> categorys = new ArrayList<Category>();
+								categorys = SCategory.loadCategoryInformation(request);
 									categorys.addAll(category.loadCategoryInformation(request));
 									if (categorys != null) {
 										for (int i = 0; i < categorys.size(); i++) {

@@ -1,5 +1,7 @@
 package services;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +17,29 @@ public class SCategory implements Logic {
 		}
 
 		return null;
+	}
+	
+	public static int categoryId( int category_id){
+		for(Category c:Logic.arCategory){
+			if(c.getCategory_id()==category_id)
+				return c.getCategory_id();
+		}
+		return 0;
+	}
+	
+	public static ArrayList<Category> loadCategoryInformation(HttpServletRequest req){
+		ArrayList<Category> category = new ArrayList<Category>();
+		category.addAll(Logic.arCategory);
+		return category;
+	}
+	
+	public static int sendCategoryId(int category_id){
+		for(Category  cat: Logic.arCategory){
+			if(cat.getCategory_id() == category_id){
+				return cat.getCategory_id();
+			}
+		}
+		return 0;
 	}
 
 	@Override
