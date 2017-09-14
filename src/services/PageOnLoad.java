@@ -27,6 +27,7 @@ public class PageOnLoad {
 		PartySQL.loadPartyStage();
 		PrivilegeSQL.loadPrivilegeToServices();
 		UserClientSQL.loadFriendInvite();
+		FriendSQL.loadUsersFriends();
 		PartySQL.loadPartyInvite();
 		UserClientSQL.loadUsersToParty();
 		ServiceSQL.loadServiceToUser();

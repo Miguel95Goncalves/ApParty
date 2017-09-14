@@ -88,9 +88,12 @@ public class SUser implements Logic {
 	public static UserClient searchUserClient(int user_id) { // Retornar um objeto UserClient
 
 		for (UserClient uc : Logic.arUserClient) {
-			if (uc.getUser_id() == user_id)
+			
+			if (uc.getUser_id() == user_id) {
 				return uc;
+			}
 		}
+		
 		return null;
 	}
 

@@ -20,23 +20,24 @@
 			<%
 				ArrayList friends = (ArrayList) request.getAttribute("friends");
 
-				out.append("<div class='panel panel-default'>" + "<div class='panel-body bg-warning'>");
+				out.append("<div class='panel panel-default'>"
+						+ "<div class='panel-body bg-warning' Style='overflow-y: auto; height: 68vh;'>");
+				if (friends.size() > 0) {
+					for (int i = 0; i < friends.size(); i++) {
+						Friend friend = (Friend) friends.get(i);
+						String name = friend.getFriend_user().getUser_name();
+						String avatar = friend.getFriend_user().getUser_avatar();
 
-				for (int i = 0; i < friends.size(); i++) {
-					Friend friend = (Friend) friends.get(i);
-					String name = friend.getFriend_user().getUser_name();
-					String avatar = friend.getFriend_user().getUser_avatar();
+						if (avatar == null)
+							avatar = "images/users/user";
 
-					if (avatar == null)
-						avatar = "images/users/user";
-
-					out.append("<div class='panel panel-default'>" + "<div class='row' Style='margin: 0.2%;'>"
-							+ "<div class='col-lg-2'>" + "<img src='" + avatar + ".jpg' class='img-circle'"
-							+ "alt='' width='75' height='58'>" + "</div>"
-							+ "<div class='col-lg-10' Style='margin-top: 2.5%;'>" + "<h4>" + "<a href='#'>" + name + "</a>"
-							+ "</h4></div></div></div>");
-				}
-
+						out.append("<div class='panel panel-default'>" + "<div class='row' Style='margin: 0.2%;'>"
+								+ "<div class='col-lg-2'>" + "<img src='" + avatar + ".jpg' class='img-circle'"
+								+ "alt='' width='75' height='58'>" + "</div>"
+								+ "<div class='col-lg-10' Style='margin-top: 2.5%;'>" + "<h4>" + "<a href='#'>" + name
+								+ "</a>" + "</h4></div></div></div>");
+					}
+				}else out.append("<h2>You Have No Friends, Yet :'(</h2>");
 				out.append("</div>" + "</div>");
 			%>
 		</div>
@@ -48,7 +49,8 @@
 			<%
 				ArrayList friendInvites = (ArrayList) request.getAttribute("friendInvites");
 
-				out.append("<div class='panel panel-default'>" + "<div class='panel-body bg-success'>");
+				out.append("<div class='panel panel-default'>"
+						+ "<div class='panel-body bg-success' Style='overflow-y: auto; height: 68vh;'>");
 
 				for (int i = 0; i < friendInvites.size(); i++) {
 
@@ -57,7 +59,7 @@
 					String avatar = friend.getFriend_user().getUser_avatar();
 					int friendId = friend.getFriend_user().getUser_id();
 
-					ArrayList<Party> commonPartys = SFriend.loadCommonParty(friend.getFriend_id(), request);
+					ArrayList<Party> commonPartys = SFriend.loadCommonParty(friend.getFriend_user().getUser_id(), request);
 
 					if (avatar == null)
 						avatar = "images/users/user";
@@ -66,6 +68,7 @@
 							+ "<div class='col-lg-2'>" + "<img src='" + avatar + ".jpg' class='img-circle'"
 							+ "alt='' width='75' height='58'>" + "</div>" + "<div class='col-lg-5'>" + "<h4>"
 							+ "<a href='#'>" + name + "</a>" + "</h4>");
+
 					for (Party p : commonPartys) {
 						out.append(p.getParty_name() + ", ");
 					}
@@ -97,7 +100,8 @@
 			<%
 				ArrayList arUserClient = (ArrayList) request.getAttribute("userCommonParty");
 
-				out.append("<div class='panel panel-default'>" + "<div class='panel-body bg-info'>");
+				out.append("<div class='panel panel-default'>"
+						+ "<div class='panel-body bg-info' Style='overflow-y: auto; height: 68vh;'>");
 
 				for (int i = 0; i < arUserClient.size(); i++) {
 

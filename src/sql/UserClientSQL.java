@@ -2,6 +2,7 @@ package sql;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -96,13 +97,15 @@ public class UserClientSQL {
 			rs = st.executeQuery(userClient);
 
 			while (rs.next()) {
+
+
 				SUser.searchUserClient(rs.getInt("friend_friend_id")).getUserArFriendInvite()
 						.add(new Friend(rs.getInt("friend_id"), SUser.searchUserClient(rs.getInt("friend_user_id")),
 								SStatus.searchStatus(rs.getInt("friend_status_id"))));
 			}
 			conn.close();
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			System.err.println("Got an exception! loadFriendInvite");
 			System.err.println(e.getMessage());
 		}
@@ -115,20 +118,14 @@ public class UserClientSQL {
 
 		ArrayList<UserClient> arCommonPeople = new ArrayList<>();
 
-		String commonPeople = "SELECT user1.user_id, user1.user_name, user_email, user_contact, user_nick, user_birth, user_avatar, user_type_id" + 
-				" from Users as user1" + 
-				" join User_Party on up_user_id=user1.user_id" + 
-				" join Party on party_id = up_party_id" + 
-				" join User_Type on user_type_id = user_user_type_id" + 
-				" where user_id!=" + user_id + " And user_id not in " + 
-				" (SELECT friend_user_id" + 
-				" FROM Friend" + 
-				" WHERE friend_user_id = " + user_id + " OR friend_friend_id = " + user_id + ")" + 
-				" and user_id not in" + 
-				" (SELECT friend_friend_id" + 
-				" FROM Friend" + 
-				" WHERE friend_user_id = " + user_id + " OR friend_friend_id = " + user_id + ")" + 
-				" GROUP BY user1.user_id, user1.user_name, user_email, user_contact, user_nick, user_birth, user_avatar, user_type_id";
+		String commonPeople = "SELECT user1.user_id, user1.user_name, user_email, user_contact, user_nick, user_birth, user_avatar, user_type_id"
+				+ " from Users as user1" + " join User_Party on up_user_id=user1.user_id"
+				+ " join Party on party_id = up_party_id" + " join User_Type on user_type_id = user_user_type_id"
+				+ " where user_id!=" + user_id + " And user_id not in " + " (SELECT friend_user_id" + " FROM Friend"
+				+ " WHERE friend_user_id = " + user_id + " OR friend_friend_id = " + user_id + ")"
+				+ " and user_id not in" + " (SELECT friend_friend_id" + " FROM Friend" + " WHERE friend_user_id = "
+				+ user_id + " OR friend_friend_id = " + user_id + ")"
+				+ " GROUP BY user1.user_id, user1.user_name, user_email, user_contact, user_nick, user_birth, user_avatar, user_type_id";
 		try {
 			Connection conn = DBConnection.getConnection();
 
@@ -138,10 +135,10 @@ public class UserClientSQL {
 			rs = st.executeQuery(commonPeople);
 
 			while (rs.next()) {
-				arCommonPeople.add(new UserClient(rs.getInt("user_id"),
-						new SUserType().searchUserType(rs.getInt("user_type_id")), rs.getString("user_name"),
-						rs.getString("user_email"), rs.getString("user_contact"), rs.getString("user_nick"),
-						rs.getString("user_birth"), rs.getString("user_avatar")));
+				arCommonPeople.add(
+						new UserClient(rs.getInt("user_id"), new SUserType().searchUserType(rs.getInt("user_type_id")),
+								rs.getString("user_name"), rs.getString("user_email"), rs.getString("user_contact"),
+								rs.getString("user_nick"), rs.getString("user_birth"), rs.getString("user_avatar")));
 			}
 			conn.close();
 

@@ -15,7 +15,7 @@ import sql.UserClientSQL;
 
 public class SFriend implements Logic {
 
-	public static Friend searchFriendship(int friend_id, int user_id) {
+	public static Friend searchFriendship(int friend_id, int user_id) { // Procurar id da relção de amizade
 
 		UserClient uc = SUser.searchUserClient(user_id);
 
@@ -27,7 +27,7 @@ public class SFriend implements Logic {
 		return null;
 	}
 
-	public static void loadFriends(HttpServletRequest req) {
+	public static void loadFriends(HttpServletRequest req) { // Carregar amigos
 		HttpSession sessao = req.getSession(true);
 		int user_id = (int) sessao.getAttribute("user_id");
 
@@ -51,16 +51,19 @@ public class SFriend implements Logic {
 		req.setAttribute("userCommonParty", arUserPartyCommon);
 	}
 
-	public static ArrayList<Party> loadCommonParty(int user_id, HttpServletRequest req) {
+	public static ArrayList<Party> loadCommonParty(int user_id, HttpServletRequest req) { // Carregar festas em comum
+																							// com um utilizador
 		ArrayList<Party> arCommonParty = UserClientSQL.loadCommonPartys(user_id, req);
+
 		return arCommonParty;
 		// req.setAttribute("userCommonParty", arCommonParty);
 	}
 
-	public static void addFriendInvite(HttpServletRequest req) {
+	public static void addFriendInvite(HttpServletRequest req) { // Enviar convite de amizade
 		HttpSession sessao = req.getSession(true);
 
 		int friendId = Integer.parseInt(req.getParameter("friendId").toString());
+
 		int userId = (int) sessao.getAttribute("user_id");
 		Status friendStatus = new Status();
 
@@ -69,11 +72,10 @@ public class SFriend implements Logic {
 				friendStatus = s;
 		}
 
-		SUser.searchUserClient(userId).getUserArFriend()
-				.add(new Friend(FriendSQL.addFriend(userId, friendId), SUser.searchUserClient(friendId), friendStatus));
+		FriendSQL.addFriend(userId, friendId);
 	}
 
-	public static void acceptFriend(HttpServletRequest req) {
+	public static void acceptFriend(HttpServletRequest req) { // Aceitar pedido de amizade
 		HttpSession sessao = req.getSession(true);
 
 		int friendId = Integer.parseInt(req.getParameter("friendId").toString());
@@ -94,7 +96,7 @@ public class SFriend implements Logic {
 
 	}
 
-	public static void rejectFriend(HttpServletRequest req) {
+	public static void rejectFriend(HttpServletRequest req) { // Rejeitar pedido de amizade
 		HttpSession sessao = req.getSession(true);
 
 		int friendId = Integer.parseInt(req.getParameter("friendId").toString());
@@ -111,7 +113,7 @@ public class SFriend implements Logic {
 		}
 	}
 
-	public static void removeFriend(HttpServletRequest req) {
+	public static void removeFriend(HttpServletRequest req) { // Remover amigo
 		HttpSession sessao = req.getSession(true);
 
 		int friendId = Integer.parseInt(req.getParameter("friendId").toString());
